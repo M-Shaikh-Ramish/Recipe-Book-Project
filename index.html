@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpicyBites Recipe Book</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Dynamic Background Slideshow -->
+    <div class="bg-slideshow">
+        <div class="bg-slide active"
+            style="background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+        </div>
+    </div>
+    <div class="bg-overlay"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar glass-nav">
+        <div class="nav-brand nav-link" data-target="home-view">
+            <i class="fa-solid fa-fire text-vibrant"></i>
+            <span class="brand-text">SpicyBites</span>
+        </div>
+
+        <div class="menu-toggle" id="mobile-menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <ul class="nav-links" id="nav-links-menu">
+            <li><a href="#" class="nav-link active" data-target="home-view">Home</a></li>
+            <li><a href="#" class="nav-link" data-target="explore-view">Explore 100+ Recipes</a></li>
+            <li class="mobile-only"><a href="#" id="mobileAddRecipeBtn" class="nav-link">Add Magic Recipe</a></li>
+        </ul>
+
+        <button id="addRecipeBtn" class="btn vibrant-btn desktop-only"><i class="fa-solid fa-plus"></i> Add Magic
+            Recipe</button>
+    </nav>
+
+    <main class="main-content">
+        <!-- HOME VIEW -->
+        <section id="home-view" class="page-view active">
+            <div class="hero">
+                <h1 class="hero-title">Experience the <br><span class="text-highlight">Explosion of Flavors</span></h1>
+                <p class="hero-subtitle">Dive into our massive collection of culinary wonders. Bright, bold, and
+                    bursting with taste!</p>
+                <div class="hero-stats">
+                    <div class="stat"><span id="totalRecipesCount" class="animated-count">0</span><label>Total
+                            Recipes</label></div>
+                    <div class="stat"><span class="animated-count">4</span><label>Categories</label></div>
+                    <div class="stat"><span class="animated-count">∞</span><label>Deliciousness</label></div>
+                </div>
+                <button class="btn vibrant-btn huge-btn nav-link" data-target="explore-view"
+                    style="margin-top: 3rem; font-size: 1.2rem;">Start Exploring Now!</button>
+            </div>
+
+            <div class="section-header">
+                <h2>🔥 Trending Right Now</h2>
+                <div class="line-decorator"></div>
+            </div>
+            <div id="homeRecipeGrid" class="recipe-grid">
+                <!-- Recipes injected here -->
+            </div>
+        </section>
+
+        <!-- EXPLORE VIEW -->
+        <section id="explore-view" class="page-view">
+            <div class="page-header">
+                <h1>Our Massive Collection</h1>
+                <p>Browse through Breakfast, Main Course, Dessert, and Appetizers. Over 100 unique recipes loaded!</p>
+            </div>
+
+            <div class="category-filters">
+                <button class="filter-btn active" data-filter="All">All Recipes</button>
+                <button class="filter-btn" data-filter="Breakfast">Breakfast</button>
+                <button class="filter-btn" data-filter="Main Course">Main Course</button>
+                <button class="filter-btn" data-filter="Dessert">Dessert</button>
+                <button class="filter-btn" data-filter="Appetizer">Appetizer</button>
+            </div>
+
+            <div id="exploreRecipeGrid" class="recipe-grid">
+                <!-- Recipes injected here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Viewing Complete Recipe -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content light-glass view-modal-content">
+            <span class="close-btn" id="closeView"><i class="fa-solid fa-xmark"></i></span>
+            <div id="viewImageContainer">
+                <img id="viewImage" src="" alt="Recipe Image">
+                <div class="img-gradient-overlay-light"></div>
+                <span class="category-badge" id="viewCategoryBadge">Category</span>
+            </div>
+            <div class="view-details">
+                <h2 id="viewTitle" class="text-gradient-vibrant slide-up">Recipe Title</h2>
+
+                <div class="view-scroll-area">
+                    <div class="view-section slide-up" style="--delay: 0.1s">
+                        <h3 class="section-title"><i class="fa-solid fa-carrot"></i> Fresh Ingredients</h3>
+                        <ul id="viewIngredients" class="custom-list-light"></ul>
+                    </div>
+                    <div class="view-section slide-up" style="--delay: 0.2s">
+                        <h3 class="section-title"><i class="fa-solid fa-utensils"></i> How to Cook</h3>
+                        <p id="viewInstructions" class="instructions-text-light"></p>
+                    </div>
+                </div>
+
+                <div class="modal-actions slide-up" style="--delay: 0.3s">
+                    <button id="editFromViewBtn" class="btn edit-btn-light"><i class="fa-solid fa-pen"></i> Update
+                        Recipe</button>
+                    <button id="deleteFromViewBtn" class="btn delete-btn-light"><i class="fa-solid fa-trash"></i>
+                        Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Adding/Editing Recipe -->
+    <div id="formModal" class="modal">
+        <div class="modal-content light-glass">
+            <span class="close-btn" id="closeForm"><i class="fa-solid fa-xmark"></i></span>
+            <h2 id="formTitle" class="text-gradient-vibrant slide-up">Add New Recipe</h2>
+            <form id="recipeForm">
+                <input type="hidden" id="recipeId">
+
+                <div class="form-row slide-up" style="--delay: 0.1s">
+                    <div class="form-group">
+                        <label for="title">Recipe Name</label>
+                        <input type="text" id="title" required placeholder="e.g. Super Spicy Wings">
+                        <div class="input-focus-line"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Main Course" selected>Main Course</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Appetizer">Appetizer</option>
+                        </select>
+                        <div class="input-focus-line"></div>
+                    </div>
+                </div>
+
+                <div class="form-group slide-up" style="--delay: 0.2s">
+                    <label for="imageUrl">Image URL</label>
+                    <input type="url" id="imageUrl" required placeholder="https://loremflickr.com/800/600/food">
+                    <div class="input-focus-line"></div>
+                </div>
+
+                <div class="form-group slide-up" style="--delay: 0.3s">
+                    <label for="ingredients">Ingredients (comma separated)</label>
+                    <textarea id="ingredients" rows="3" required placeholder="Chicken, Hot Sauce, Butter..."></textarea>
+                    <div class="input-focus-line"></div>
+                </div>
+
+                <div class="form-group slide-up" style="--delay: 0.4s">
+                    <label for="instructions">Instructions</label>
+                    <textarea id="instructions" rows="4" required placeholder="Step by step preparation..."></textarea>
+                    <div class="input-focus-line"></div>
+                </div>
+
+                <button type="submit" class="btn vibrant-btn slide-up" style="--delay: 0.5s" id="saveBtn">Save
+                    Recipe</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Import Vanilla-Tilt -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
